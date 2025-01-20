@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const formularioPensamento = document.getElementById("pensamento-form");
     formularioPensamento.addEventListener("submit", manipularSubmissaoFormulario);
-   
+
     const botaoCancelar = document.getElementById("botao-cancelar");
     botaoCancelar.addEventListener("click", manipularCancelamento)
 });
@@ -18,7 +18,12 @@ async function manipularSubmissaoFormulario(event) {
     const autoria = document.getElementById("pensamento-autoria").value;
 
     try {
-        await api.salvarPensamentos({ conteudo, autoria });
+        if (id) {
+            await api.editarPensamentos({ id, conteudo, autoria });
+        }
+        else {
+            await api.salvarPensamentos({ conteudo, autoria });
+        }
         ui.renderizarPensamentos()
     } catch (error) {
         alert("Erro ao salvar pensamento")
@@ -27,7 +32,7 @@ async function manipularSubmissaoFormulario(event) {
 
 function manipularCancelamento() {
     ui.limparFormulario();
-  }
+}
 
 
 
