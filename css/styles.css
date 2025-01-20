@@ -188,7 +188,17 @@ h2, h3 {
 }
 
 #botao-cancelar {
-  color: var(--Azul-Dark, #041832);
+  color: var(--Azul-Dark, #144480);
+}
+#botao-salvar:hover {
+  background:  #144480;  
+  cursor: pointer;
+}
+
+#botao-cancelar:hover {
+  color: #144480;  
+  border-color: #144480;
+  cursor: pointer;
 }
 
 #lista-pensamentos-container {
