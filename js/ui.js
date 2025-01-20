@@ -16,12 +16,17 @@ const ui = {
 
     async renderizarPensamentos() {
         const listaPensamentos = document.querySelector('#lista-pensamentos');
-
+        listaPensamentos.innerHTML = ""
+        
         try {
             const pensamentos = await api.buscarPensamentos();
-            pensamentos.forEach(this.adicionarPensamentoNaLista)
-
-
+            if (pensamentos.length) {
+                pensamentos.forEach(this.adicionarPensamentoNaLista)
+            }
+            else {
+                ui.mensagemListaVazia()
+                console.log("Sem pensamentos")
+            }
         } catch (error) {
             console.log(error);
             throw (error);
@@ -55,9 +60,27 @@ const ui = {
         iconeEditar.alt = "Editar";
         botaoEditar.appendChild(iconeEditar);
 
+        const botaoExcluir = document.createElement("button");
+        botaoExcluir.classList.add("botao-excluir");
+        botaoExcluir.onclick = async () => {
+            try {
+                api.excluirPensamentos(pensamento.id);
+                ui.renderizarPensamentos()
+            } catch (error) {
+                alert('Erro ao excluir pensamento')
+            }
+
+        }
+
+        const iconeExcluir = document.createElement("img");
+        iconeExcluir.src = "assets/imagens/icone-excluir.png";
+        iconeExcluir.alt = "Excluir";
+        botaoExcluir.appendChild(iconeExcluir);
+
         const icones = document.createElement("div");
         icones.classList.add("icones");
         icones.appendChild(botaoEditar);
+        icones.appendChild(botaoExcluir);
 
         li.appendChild(iconeAspas);
         li.appendChild(pensamentoConteudo);
@@ -65,8 +88,33 @@ const ui = {
         li.appendChild(icones)
         listaPensamentos.appendChild(li);
 
+
+
+
+    },
+
+    mensagemListaVazia() {
+        const listaPensamentos = document.querySelector('#lista-pensamentos');
         
-   
+        const containerListaVazia = document.createElement("div");
+        containerListaVazia.style.width = "100vh"
+        containerListaVazia.style.display ="flex"
+        containerListaVazia.style.gap = "2rem"
+        containerListaVazia.style.textAlign = "center"
+        containerListaVazia.style.alignItems = "center"
+        containerListaVazia.style.flexDirection ="column"
+        
+        const textoListaVazia = document.createElement("p");
+        textoListaVazia.textContent = "Nada por aqui ainda, que tal compartilhar alguma ideia?"
+
+        const imagemListaVazia = document.createElement("img");
+        imagemListaVazia.src = "./assets/imagens/lista-vazia.png"
+        imagemListaVazia.alt = "lista vazia"
+
+        containerListaVazia.appendChild(textoListaVazia);
+        containerListaVazia.appendChild(imagemListaVazia);
+
+        listaPensamentos.appendChild(containerListaVazia);
 
     }
 
